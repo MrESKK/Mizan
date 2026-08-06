@@ -316,6 +316,48 @@
     Q('smmmdeg','5786','Madde 21',9,'5786 sayılı Kanun ne zaman yürürlüğe girmiştir?','Yayımı tarihinde.',['Yayımından üç ay sonra.','Takip eden takvim yılında.','İlk yönetmelik çıkınca.'],'“Bu Kanun yayımı tarihinde yürürlüğe girer.”','Resmî Gazete'),
     Q('smmmdeg','5786','Madde 22',9,'5786 sayılı Kanunun hükümlerini yürütme görevi kime verilmiştir?','Bakanlar Kuruluna.',['Yalnız TÜRMOB’a.','Maliye Bakanlığına tek başına.','TBMM Başkanlığına.'],'“Bu Kanun hükümlerini Bakanlar Kurulu yürütür.”','Resmî Gazete')
   ];
+
+  // Örneklerdeki gibi, verilen bilgileri ayırıp işlem yaparak sonuca ulaşmayı
+  // gerektiren sorular. Her hesaplama yalnız aşağıda gösterilen kanun hükmüne
+  // dayanır; yıllık had veya kaynak dışı tarife kullanılmaz.
+  const calculationQuestions=[
+    Q('gvk','193','Madde 37, 74 ve 86','20, 37, 46',
+      'Bayan (A)’nın bir takvim yılında elde ettiği gelirler şöyledir:\n- Ticari kazanç: 420.000 TL\n- Tek işverenden alınmış ve tevkif suretiyle vergilendirilmiş ücret: 90.000 TL\n- Alacak faizi: 30.000 TL\n- İşyeri kira geliri (brüt): 120.000 TL\n\nMükellef işyeri kira geliri için %15 götürü gider usulünü seçmiştir. Ücret geliri, Madde 86 gereğince beyannameye dahil edilmeyecektir. Buna göre yıllık beyannameye dahil edilecek gelirler üzerinden hesaplanan vergi matrahı kaç TL’dir?',
+      '552.000 TL.',['522.000 TL.','540.000 TL.','570.000 TL.'],
+      'Ticari kazanç gelirin unsurlarındandır; gayrimenkul sermaye iradında götürü gider uygulanabilir. Tek işverenden alınan tevkifli ücret, belirtilen koşullarda beyannameye dahil edilmez.'),
+    Q('gvk','193','Madde 37, 74 ve 86','20, 37, 46',
+      'Bay (B)’nin yıllık gelirleri aşağıdaki gibidir:\n- Ticari kazanç: 275.000 TL\n- Tek işverenden alınmış ve tevkif suretiyle vergilendirilmiş ücret: 140.000 TL\n- Alacak faizi: 18.000 TL\n- İşyeri kira geliri (brüt): 80.000 TL\n\nB, kira geliri için %15 götürü gider yöntemini seçmiş; ücret geliri ise Madde 86 kapsamında beyannameye dahil edilmemiştir. B’nin yıllık vergi matrahı kaç TL’dir?',
+      '361.000 TL.',['349.000 TL.','373.000 TL.','413.000 TL.'],
+      'İşyeri kira gelirinin %15’i götürü gider olarak indirilir. Tek işverenden alınan tevkifli ücret, soruda belirtilen koşul altında beyannameye eklenmez.'),
+    Q('kvk','5520','Madde 5/1-a','3',
+      'Tam mükellef Atlas A.Ş.’nin dönem sonu ticari bilanço kârı 1.060.000 TL’dir. Bu tutarın içinde, şartları tamamen sağlanan tam mükellef başka bir kurum iştirakinden elde edilen 360.000 TL kâr payı bulunmaktadır. Başka indirim veya kanunen kabul edilmeyen gider yoktur. Buna göre kurumlar vergisi matrahı kaç TL’dir?',
+      '700.000 TL.',['1.060.000 TL.','360.000 TL.','1.420.000 TL.'],
+      'Tam mükellef başka bir kurumun sermayesine katılmadan elde edilen iştirak kazançları kurumlar vergisinden istisnadır.'),
+    Q('kvk','5520','Madde 11/1-d','12',
+      'Poyraz A.Ş.’nin ticari bilanço kârı 780.000 TL’dir. Bu kâr hesaplanırken 50.000 TL kurumlar vergisi ve 20.000 TL vergi cezası gider yazılmıştır. Başka düzeltme bulunmadığına göre kurumlar vergisi matrahı kaç TL olur?',
+      '850.000 TL.',['780.000 TL.','830.000 TL.','900.000 TL.'],
+      'Kurumlar vergisi ile vergi cezaları kurum kazancının tespitinde indirilemez; ticari kâra eklenmeleri gerekir.'),
+    Q('viv','7338','Madde 4/d','2',
+      'C, 2026 yılında bir yakınından karşılıksız olarak 500.000 TL para almıştır. Bu intikal için 2026 yılı ivazsız intikal istisnası dışında başka indirim yoktur. Buna göre veraset ve intikal vergisi matrahı kaç TL’dir?',
+      '433.065 TL.',['500.000 TL.','433.935 TL.','566.935 TL.'],
+      '2026 yılı için ivazsız suretle vaki intikallerde istisna tutarı 66.935 TL’dir.'),
+    Q('viv','7338','Madde 4/b','2',
+      'D, 2026 yılında babasından veraset yoluyla 3.200.000 TL değerinde mal iktisap etmiştir. D, murisin füruğudur ve bu intikal için yalnız 2026 yılı miras hissesi istisnası uygulanacaktır. Buna göre vergi matrahı kaç TL’dir?',
+      '292.864 TL.',['2.907.136 TL.','3.200.000 TL.','5.817.845 TL.'],
+      '2026 yılı için füruğ ve eşin her birine isabet eden miras hissesi istisnası 2.907.136 TL’dir.'),
+    Q('mtv','197','Madde 5','3',
+      'Yalnız elektrik motorlu bir otomobil için, ilgili yaş ve motor gücü satırındaki normal yıllık MTV tutarı 14.800 TL’dir. Taşıtın başka bir istisnası bulunmadığına göre ödenecek yıllık MTV kaç TL’dir?',
+      '3.700 TL.',['2.960 TL.','7.400 TL.','14.800 TL.'],
+      'Yalnız elektrik motorlu taşıtlar, ilgili satırdaki vergi tutarının %25’i oranında vergilendirilir.'),
+    Q('vuk','213','Madde 344','67',
+      'Yapılan incelemede, mükellefin 85.000 TL vergiyi ziyaa uğrattığı tespit edilmiştir. Kaçakçılık fiili veya cezayı artıran başka bir durum bulunmadığına göre kesilecek vergi ziyaı cezası kaç TL’dir?',
+      '85.000 TL.',['42.500 TL.','127.500 TL.','170.000 TL.'],
+      'Vergi ziyaına sebebiyet verildiğinde mükellef veya sorumlu hakkında ziyaa uğratılan verginin bir katı tutarında vergi ziyaı cezası kesilir.'),
+    Q('dvk','488','Madde 6','1',
+      'Tek bir kâğıtta, birbirinden tamamen bağımsız üç sözleşme düzenlenmiştir. Her bir sözleşme için yapılan ayrı Damga Vergisi hesapları sırasıyla 1.200 TL, 800 TL ve 2.000 TL’dir. Buna göre bu kâğıt nedeniyle toplam kaç TL Damga Vergisi alınır?',
+      '4.000 TL.',['2.000 TL.','2.800 TL.','6.000 TL.'],
+      'Birbirinden tamamen ayrı birden fazla akit ve işlem aynı kâğıtta toplanmışsa her bir akit ve işlemden ayrı ayrı vergi alınır.')
+  ];
   // Yüklenen diğer kanunların madde envanteri. Aynı maddeye ait mevcut ayrıntılı
   // sorular korunur; eksik maddeler bu kaynaklı senaryo sorularıyla tamamlanır.
   const articleCatalog=[
@@ -1688,20 +1730,73 @@
   const uniqueArticleMap=new Map();
   articleCatalog.forEach(item=>{const key=articleKey(item.t,item.m);if(!uniqueArticleMap.has(key))uniqueArticleMap.set(key,item);});
   const uniqueArticleCatalog=[...uniqueArticleMap.values()];
+  // Her eksik madde için aynı "somut olay" kalıbını kullanmak yerine, kanunun
+  // uygulama alanına uygun bir dosya kurgusu oluşturulur. Böylece soru kökü,
+  // örneklerdeki gibi bir kişi/kurum ve karar verilmesi gereken işlem içerir.
   const bulkQuestion=(item,n)=>{
-    const stories={
-      gvk:['Gelir vergisi beyannamesini hazırlayan bir mükellef, dosyasındaki işlemin vergi sonucunu öğrenmek istemektedir.','Bir gelir vergisi incelemesinde, mükellefin beyanı ile idarenin değerlendirmesi arasında uyuşmazlık çıkmıştır.'],
-      vuk:['Vergi dairesindeki dosyada usule ilişkin bir sorun ortaya çıkmış; memur, işlem yapmadan önce kanuni dayanağı kontrol etmektedir.','Bir mükellef, vergi işleminin hangi usulle yürütüleceğini öğrenmek için vergi dairesine başvurmuştur.'],
-      kvk:['Bir kurum, dönem sonu vergileme işlemi öncesinde ticari kararının kurumlar vergisi etkisini değerlendirmektedir.','Kurumlar vergisi incelemesinde, şirketin uyguladığı yöntemin kanuna uygunluğu tartışılmaktadır.'],
-      aathu:['Tahsil servisindeki görevli, vadesi gelmiş kamu alacağı için izlenecek yolu belirlemektedir.','Amme borçlusu, hakkında yürütülen takip işlemine karşı kanuni durumunu öğrenmek istemektedir.'],
-      kmykk:['Bir kamu idaresi, bütçe uygulamasında karşılaştığı somut durum için kanuni sınırları belirlemektedir.','Kamu kaynağını kullanacak görevli, karar vermeden önce mali yönetim kuralını kontrol etmektedir.'],
-      dmk:['Bir kamu kurumunda görev yapan memur, görev ve haklarına ilişkin somut bir durumda nasıl davranacağını değerlendirmektedir.','Kurum amiri, memur hakkında işlem tesis etmeden önce 657 sayılı Kanundaki kuralı incelemektedir.'],
-      behk:['Bir vatandaşın bilgi edinme başvurusu kurumun önüne gelmiş; görevli başvuruyu kanuna göre değerlendirmektedir.','Kurum, istenen bilgi veya belgeye ilişkin karar vermeden önce başvurucunun hakkını incelemektedir.'],
-      dhk:['Bir vatandaş, dilekçe başvurusunun nasıl sonuçlandırılması gerektiğini öğrenmek için idareye başvurmuştur.','Yetkili makam, kendisine ulaşan dilekçe hakkında işlem tesis etmeden önce kanuni usulü kontrol etmektedir.'],
-      mtv:['Araç kaydıyla ilgili işlem yapılırken mükellefiyet ve vergileme sonucu değerlendirilmek istenmektedir.','Bir taşıt sahibi, motorlu taşıtlar vergisi bakımından karşılaştığı durumun sonucunu sormaktadır.'],
-      viv:['Miras veya karşılıksız intikal dosyasında, vergi dairesi işlemin sonucunu belirlemektedir.','Bir mirasçı, intikal eden mal bakımından vergi yükümlülüğünü öğrenmek istemektedir.']
+    const cases={
+      gvk:[
+        'Ece, yıl içinde elde ettiği kazanç ve iratları için beyannamesini hazırlamaktadır.',
+        'Gelir uzmanı, mükellefin beyannameye dahil ettiği gelirin niteliğini incelemektedir.',
+        'Mükellef ile idare arasında gelirin Türkiye’de elde edilip edilmediği konusunda uyuşmazlık çıkmıştır.'
+      ],
+      vuk:[
+        'Vergi dairesinde yürütülen incelemede, işlemin usulüne ilişkin bir tereddüt ortaya çıkmıştır.',
+        'Mükellef, kendisi hakkında yürütülen vergilendirme işlemine karşı hangi hakkın ve yükümlülüğün doğduğunu öğrenmek istemektedir.',
+        'İnceleme elemanı, dosyadaki belge ve beyanları değerlendirerek işlem tesis edecektir.'
+      ],
+      kvk:[
+        'Artemis A.Ş., dönem sonu kurumlar vergisi beyannamesini vermeden önce bu işlemin vergi sonucunu değerlendirmektedir.',
+        'Bir kurumlar vergisi incelemesinde, şirketin uyguladığı yöntemin istisna veya indirimden yararlanıp yararlanamayacağı tartışılmaktadır.',
+        'Şirket yönetimi, ticari kararın kurumlar vergisi bakımından doğuracağı sonucu mali müşavirinden istemiştir.'
+      ],
+      aathu:[
+        'Vadesi gelen amme alacağı için tahsil servisi dosyada izlenecek kanuni yolu belirlemektedir.',
+        'Amme borçlusu, kendisine bildirilen takip işleminin hangi sonucu doğuracağını sormuştur.',
+        'Tahsil memuru, borçlu ve sorumlular bakımından uygulanacak işlemi dosya üzerinden değerlendirmektedir.'
+      ],
+      kmykk:[
+        'Bir kamu idaresinde bütçe uygulaması sırasında bu işleme ilişkin karar alınacaktır.',
+        'Harcama yetkilisi, kamu kaynağını kullanmadan önce kanunun çizdiği sınırı kontrol etmektedir.',
+        'İdarenin mali hizmetler birimi, kaynak kullanımının kanuna uygunluğuna ilişkin görüş hazırlamaktadır.'
+      ],
+      dmk:[
+        'Bir kamu kurumunda görev yapan memurun görev ve haklarına ilişkin başvuru incelenmektedir.',
+        'Kurum amiri, memur hakkında işlem tesis etmeden önce uygulanacak kuralı değerlendirmektedir.',
+        'Memur, görev sırasında karşılaştığı durumda nasıl hareket etmesi gerektiğini kurumuna sormuştur.'
+      ],
+      behk:[
+        'Deniz, bir kamu kurumuna bilgi edinme başvurusunda bulunmuştur; kurum başvuruyu sonuçlandıracaktır.',
+        'Bilgi edinme birimi, istenen belgeye erişim sağlanıp sağlanamayacağını değerlendirmektedir.',
+        'Başvuru sahibi, talebinin hangi usulle cevaplandırılması gerektiği konusunda idareden açıklama istemiştir.'
+      ],
+      dhk:[
+        'Mert, kamu hizmetiyle ilgili talebini yazılı dilekçeyle idareye iletmiştir.',
+        'İdareye ulaşan dilekçenin görevli makam ve incelenme usulü bakımından değerlendirilmesi gerekmektedir.',
+        'Başvuru sahibi, dilekçesi hakkında idarenin nasıl işlem yapacağını öğrenmek istemektedir.'
+      ],
+      mtv:[
+        'Selin, aracına ilişkin kayıt işlemi sonrasında motorlu taşıtlar vergisi yönünden durumunu öğrenmek istemektedir.',
+        'Araç satış ve tescil dosyasında vergilemeye etki eden bir değişiklik ortaya çıkmıştır.',
+        'Vergi dairesi, taşıta ilişkin bildirimin ve mükellefiyetin nasıl değerlendirileceğini incelemektedir.'
+      ],
+      viv:[
+        'Bir miras dosyasında mirasçılar, intikal eden değerler nedeniyle doğacak vergi sonucunu öğrenmek istemektedir.',
+        'Karşılıksız intikal dosyasında vergi dairesi, istisna ve ödeme kurallarını uygulayacaktır.',
+        'Mirasçı, veraset ve intikal vergisi bakımından kendi durumuna uygulanacak sonucu sormuştur.'
+      ]
     };
-    const paths=stories[item.t]||['Bir idari işlem dosyasında, görevli kanuni sonucu belirlemektedir.'];
+    const paths=cases[item.t]||['İdari dosyada kanundaki özel düzenlemeye göre karar verilmesi gerekmektedir.'];
+    const caseHeading=record=>{
+      let heading=record.h.replace(/\s+/g,' ').replace(/^\(?[a-zçğıöşü]\)\s*/i,'').replace(/\s*[:;]\s*$/,'').trim();
+      if(heading.length>96 || !/[A-Za-zÇĞİÖŞÜçğıöşü]/.test(heading)) return 'ilgili kanuni düzenleme';
+      return `“${heading}” başlığı altındaki düzenleme`;
+    };
+    const questionEndings=[
+      'Kanundaki şartlar ve sonuç birlikte dikkate alındığında aşağıdaki değerlendirmelerden hangisi doğrudur?',
+      'İdarenin bu başvuru veya işlem için kanuna uygun değerlendirmesi hangisi olmalıdır?',
+      'Bu işlemde uygulanacak kural bakımından doğru sonuç hangisidir?'
+    ];
     const compactRule=record=>{
       const lower=record.r.toLocaleLowerCase('tr');
       if(lower.includes('hazine ve maliye bakanlığı')&&lower.includes('ticaret bakanlığı')) return 'Elektronik defterlerin tasdikinde usul, esas ve süreler iki Bakanlıkça birlikte belirlenir.';
@@ -1734,10 +1829,10 @@
       if(candidate&&!wrong.includes(candidate)) wrong.push(candidate);
     }
     while(wrong.length<3) wrong.push('Maddede belirtilen farklı bir koşul ve sonuç uygulanır.');
-    return Q(item.t,item.l,item.m,item.p,`${paths[n%paths.length]} Bu somut olayda ilgili kanun hükmüne göre hangi değerlendirme doğrudur?`,correct,wrong,item.r);
+    return Q(item.t,item.l,item.m,item.p,`${paths[n%paths.length]} Dosyada ${caseHeading(item)} gündemdedir. ${questionEndings[n%questionEndings.length]}`,correct,wrong,item.r);
   };
   const expandedQuestions=uniqueArticleCatalog.filter(item=>!existingArticleKeys.has(articleKey(item.t,item.m))).map(bulkQuestion);
-  const questions=[...baseQuestions,...lawQuestions,...expandedQuestions];
+  const questions=[...baseQuestions,...lawQuestions,...calculationQuestions,...expandedQuestions];
   let selected=null, active=[], index=0, answers={};
   const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
   const esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
