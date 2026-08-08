@@ -19,14 +19,143 @@
     @media(max-width:650px){.app{padding:18px 14px 96px}.top{margin-bottom:20px}.hero{padding:24px 21px;border-radius:19px}.topic-grid{grid-template-columns:1fr;gap:12px}.topic{padding:19px}.quiz-head h2{font-size:23px}.progress{min-width:110px}.card{padding:20px 16px;border-radius:18px}.question{font-size:21px}.option{padding:13px 11px;font-size:14px}.stats{display:none}.nav-inner{padding:11px 14px}.count{display:none}.reference-item{padding:17px}.reference-arrow{font-size:12px}}
    #selfpromotionOverlay, #nav, #title { display: none !important; }
 </style>
+  <style>
+    /* Visual system — the question data and interaction logic below remain untouched. */
+    :root{
+      --ink:#172033;
+      --muted:#667085;
+      --paper:#ffffff;
+      --canvas:#f6f7f9;
+      --line:#e4e7ec;
+      --blue:#2457f5;
+      --navy:#111827;
+      --good:#ecfdf3;
+      --good-ink:#067647;
+      --bad:#fff1f3;
+      --bad-ink:#b42345;
+      --shadow:0 1px 2px rgba(16,24,40,.03),0 14px 32px rgba(16,24,40,.08);
+      --ease-out:cubic-bezier(.23,1,.32,1);
+      --ease-in-out:cubic-bezier(.77,0,.175,1);
+    }
+    *{box-sizing:border-box}
+    body{
+      background:var(--canvas);
+      color:var(--ink);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      font-feature-settings:"ss01" 1,"cv02" 1;
+      letter-spacing:-.012em;
+    }
+    body:before{
+      content:"";position:fixed;z-index:-1;inset:0;pointer-events:none;
+      background:radial-gradient(circle at 82% -8%,rgba(36,87,245,.10),transparent 30rem),
+                 linear-gradient(rgba(16,24,40,.025) 1px,transparent 1px),
+                 linear-gradient(90deg,rgba(16,24,40,.025) 1px,transparent 1px);
+      background-size:auto,40px 40px,40px 40px;
+    }
+    .app{max-width:1160px;padding:28px 24px 116px}
+    .top{margin-bottom:52px}
+    .brand{gap:11px}
+    .seal{
+      width:38px;height:38px;border-radius:11px;background:var(--ink);font-size:15px;
+      border:0;padding:0;cursor:pointer;
+      box-shadow:inset 0 1px rgba(255,255,255,.16),0 4px 12px rgba(16,24,40,.14);
+      transition:transform 160ms var(--ease-out),box-shadow 160ms ease
+    }
+    .brand h1{font-size:15px;letter-spacing:-.02em}
+    .brand p{font-size:12px;color:var(--muted)}
+    .source-link,.secondary{
+      border:1px solid var(--line);background:rgba(255,255,255,.72);color:#344054;
+      border-radius:10px;font-size:13px;font-weight:700;box-shadow:0 1px 1px rgba(16,24,40,.02);
+      transition:transform 160ms var(--ease-out),border-color 160ms ease,background 160ms ease,box-shadow 160ms ease;
+    }
+    .source-link{padding:9px 12px;color:#344054}
+    .hero{
+      display:block;min-height:280px;padding:47px 48px 42px;border-radius:20px;
+      background:var(--navy);box-shadow:0 18px 42px rgba(16,24,40,.16);isolation:isolate;
+    }
+    .hero:before{
+      content:"SINAV HAZIRLIĞI";position:absolute;top:29px;right:32px;z-index:1;
+      color:#a8bbff;font-size:11px;font-weight:800;letter-spacing:.13em;
+    }
+    .hero:after{
+      width:360px;height:360px;right:-130px;top:-180px;border:1px solid rgba(255,255,255,.16);
+      box-shadow:0 0 0 34px rgba(255,255,255,.035),0 0 0 68px rgba(255,255,255,.025);
+    }
+    .hero h2{position:relative;z-index:1;max-width:680px;margin:0 0 14px;font-size:clamp(31px,4.5vw,52px);line-height:1.02;letter-spacing:-.045em}
+    .hero p{position:relative;z-index:1;max-width:510px;color:#bfc9df;font-size:16px;line-height:1.55}
+    .creator{margin-top:36px;color:#9faccc}.creator b{letter-spacing:-.01em}
+    .topic-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0 22px}
+    .topic{
+      position:relative;min-height:218px;padding:20px;border:1px solid var(--line);border-radius:15px;
+      background:rgba(255,255,255,.9);box-shadow:none;overflow:hidden;
+      transition:transform 180ms var(--ease-out),border-color 180ms ease,box-shadow 180ms ease,background 180ms ease;
+    }
+    .topic:after{content:"";position:absolute;inset:auto 20px 0;height:3px;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform 180ms var(--ease-out)}
+    .tag{font-size:10px;letter-spacing:.095em;color:#5268bb}
+    .topic h3{margin:10px 0 9px;font-size:18px;line-height:1.16;letter-spacing:-.028em}
+    .topic p{font-size:13px;line-height:1.5;color:var(--muted)}
+    .meta{position:absolute;right:20px;bottom:17px;left:20px;gap:5px}
+    .meta span{padding:4px 6px;border-radius:6px;background:#f2f4f7;color:#667085;font-size:10px;font-weight:650}
+    .topic.selected{border:1px solid var(--blue);background:#f8faff;box-shadow:0 10px 28px rgba(36,87,245,.12)}
+    .topic.selected:after{transform:scaleX(1)}
+    @media (hover:hover) and (pointer:fine){
+      .seal:hover{transform:translateY(-1px);box-shadow:inset 0 1px rgba(255,255,255,.16),0 7px 16px rgba(16,24,40,.18)}
+      .topic:hover{transform:translateY(-3px);border-color:#b8c5ef;box-shadow:var(--shadow)}
+      .topic:hover:after{transform:scaleX(1)}
+      .source-link:hover,.secondary:hover{border-color:#c7d1ea;background:#fff;box-shadow:0 5px 15px rgba(16,24,40,.06)}
+    }
+    button:hover:not(:disabled){transform:none;box-shadow:none}
+    button:active:not(:disabled),.topic:active{transform:scale(.98)}
+    button:focus-visible,a:focus-visible{outline:3px solid rgba(36,87,245,.28);outline-offset:3px}
+    .actions{padding-top:4px}
+    .primary{
+      min-height:44px;padding:12px 17px;border-radius:10px;background:var(--blue);font-size:14px;
+      box-shadow:0 7px 16px rgba(36,87,245,.22);
+      transition:transform 160ms var(--ease-out),background 160ms ease,box-shadow 160ms ease;
+    }
+    @media (hover:hover) and (pointer:fine){.primary:hover:not(:disabled){background:#1d4ce8;box-shadow:0 10px 20px rgba(36,87,245,.28)}}
+    .notice{font-size:12px}.site-footer{margin-top:44px;padding-top:20px;color:#98a2b3;font-size:12px}
+    #quizView{max-width:880px;margin:0 auto}
+    .quiz-head{align-items:end;margin-bottom:20px}.eyebrow{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#5268bb}
+    .quiz-head h2{font-size:34px;letter-spacing:-.04em}.progress{min-width:196px}.progress-label{font-variant-numeric:tabular-nums;color:#667085}
+    .bar{height:5px;background:#e4e7ec}.bar i{background:var(--blue);transition:width 250ms var(--ease-out)}
+    .card{padding:35px;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}
+    .question{max-width:740px;margin-bottom:28px;font-size:clamp(22px,3vw,30px);line-height:1.27;letter-spacing:-.035em}
+    .options{gap:9px}.option{
+      padding:14px 15px;border-radius:11px;border-color:var(--line);font-size:15px;line-height:1.45;
+      transition:transform 160ms var(--ease-out),border-color 160ms ease,background 160ms ease;
+    }
+    .letter{width:25px;min-width:25px;height:25px;border-radius:50%;background:#f2f4f7;color:#475467;font-size:11px}
+    @media (hover:hover) and (pointer:fine){.option:hover:not(:disabled){transform:translateX(3px);border-color:#9db0ec;background:#f8faff}}
+    .option.correct{background:var(--good);border-color:#a6e5c4;color:var(--good-ink)}.option.wrong{background:var(--bad);border-color:#fecdd6;color:var(--bad-ink)}
+    .feedback{margin-top:17px;padding:18px;border-radius:12px}.feedback .citation{font-size:12px}.feedback blockquote{font-size:13px}
+    .bottom-nav{border:0;background:transparent;pointer-events:none}.nav-inner{
+      max-width:900px;margin:0 auto 17px;padding:8px;border:1px solid rgba(255,255,255,.72);border-radius:16px;
+      background:rgba(17,24,39,.92);box-shadow:0 12px 34px rgba(16,24,40,.20);backdrop-filter:blur(16px) saturate(150%);pointer-events:auto;
+    }
+    .nav-inner .secondary{padding:9px 11px;border-color:transparent;background:transparent;color:#d0d5dd;box-shadow:none}.nav-inner .secondary:disabled{color:#667085}
+    .nav-inner .primary{min-height:38px;padding:9px 13px;font-size:13px;box-shadow:none}.count{font-variant-numeric:tabular-nums;color:#98a2b3}.stat{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.08);color:#cbd5e1}.stat b{color:#fff}
+    dialog{border:1px solid var(--line);border-radius:18px;box-shadow:0 24px 70px rgba(16,24,40,.25)}
+    .drawer{background:rgba(16,24,40,.42);backdrop-filter:blur(4px)}.drawer-panel{border-radius:18px 18px 0 0;padding:24px;box-shadow:0 -14px 42px rgba(16,24,40,.18)}
+    .qdot{border-radius:9px;transition:transform 160ms var(--ease-out),border-color 160ms ease,background 160ms ease}.qdot:active{transform:scale(.95)}
+    .reference{max-width:880px}.reference h2{font-size:40px;letter-spacing:-.045em}.reference-list{gap:9px}.reference-item{padding:19px 20px;border-radius:14px;transition:transform 160ms var(--ease-out),border-color 160ms ease,box-shadow 160ms ease}
+    @media (hover:hover) and (pointer:fine){.reference-item:hover{transform:translateX(3px);border-color:#b8c5ef;box-shadow:var(--shadow)}}
+    .reference-arrow{font-size:12px}
+    @media (prefers-reduced-motion:reduce){
+      *,*:before,*:after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
+    }
+    @media (prefers-reduced-transparency:reduce){.nav-inner{background:var(--navy);backdrop-filter:none}.source-link,.secondary{background:#fff}}
+    @media (max-width:850px){.topic-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{padding:37px 32px;min-height:250px}.top{margin-bottom:32px}}
+    @media (max-width:650px){
+      .app{padding:18px 14px 98px}.top{margin-bottom:26px}.brand p{display:none}.source-link{padding:8px 10px}.hero{min-height:235px;padding:30px 23px;border-radius:16px}.hero:before{top:18px;right:18px;font-size:9px}.hero h2{max-width:330px;font-size:31px}.hero p{font-size:14px}.creator{margin-top:26px}.topic-grid{grid-template-columns:1fr;gap:9px;margin-top:10px}.topic{min-height:185px;padding:18px}.meta{right:18px;bottom:15px;left:18px}.quiz-head h2{font-size:27px}.progress{min-width:106px}.card{padding:23px 16px;border-radius:15px}.question{font-size:22px}.option{padding:13px 12px;font-size:14px}.nav-inner{gap:3px;margin:0 9px 9px;padding:6px;border-radius:13px}.nav-inner .secondary{padding:9px 9px}.nav-inner #prevBtn,.nav-inner #listBtn{font-size:0}.nav-inner #prevBtn:after{content:"←";font-size:16px}.nav-inner #listBtn:after{content:"☷";font-size:16px}.nav-inner .primary{padding:9px 11px}.reference h2{font-size:32px}.reference-item{padding:16px}.reference-item b{font-size:15px}}
+  </style>
 </head>
 <body>
   <main class="app">
-    <header class="top"><div class="brand"><div class="seal">V</div><div><h1>Vergi Akademi</h1><p>Müdür yardımcılığı çalışma alanı</p></div></div><button id="referencesBtn" class="source-link">Kaynakça</button></header>
+    <header class="top"><div class="brand"><button id="homeSeal" class="seal" type="button" aria-label="Ana sayfaya dön">V</button><div><h1>Vergi Akademi</h1><p>Müdür yardımcılığı çalışma alanı</p></div></div><button id="referencesBtn" class="source-link">Kaynakça</button></header>
     <section id="homeView">
       <div class="hero"><h2>Kaynağa dayalı, odaklı sınav hazırlığı.</h2><p>Soruyu seç, yanıtla ve kanundaki dayanağını anında gör.</p><div class="creator">Created by <a href="https://github.com/MrESKK" target="_blank" rel="noopener"><b>MrESKK</b></a></div></div>
       <div id="topicGrid" class="topic-grid"></div>
-      <div class="actions"><button id="startBtn" class="primary" disabled>Çalışmaya başla</button></div>
       <footer class="site-footer">© 2026 <b>erenesk3@gmail.com</b>. Tüm hakları saklıdır.</footer>
     </section>
     <section id="referenceView" hidden class="reference"><h2>Kaynakça</h2><p>Soru bankasında kullanılan resmî kanun kaynakları.</p><div id="referenceList" class="reference-list"></div><button id="referenceBack" class="secondary back-link">← Ana sayfa</button></section>
@@ -1838,9 +1967,9 @@
   const esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const letters=['A','B','C','D','E'];
   function topicCard(t){const n=questions.filter(q=>q.topic===t.id).length;return `<button class="topic" data-topic="${t.id}"><div class="tag">${t.law} sayılı kanun</div><h3>${t.title}</h3><p>${t.desc}</p><div class="meta"><span>${t.pages} sayfalık kaynak</span><span>${n} doğrulanmış soru</span><span>${t.version}</span></div></button>`}
-  function renderTopics(){ $('#topicGrid').innerHTML=topics.map(topicCard).join(''); $$('.topic').forEach(b=>b.onclick=()=>{selected=b.dataset.topic;$$('.topic').forEach(x=>x.classList.toggle('selected',x===b));$('#startBtn').disabled=false;}); }
+  function renderTopics(){ $('#topicGrid').innerHTML=topics.map(topicCard).join(''); $$('.topic').forEach(b=>b.onclick=()=>{selected=b.dataset.topic;start();}); }
   function showReferences(){ $('#homeView').style.display='none';$('#quizView').style.display='none';$('#referenceView').hidden=false;$('#bottomNav').hidden=true;$('#referencesBtn').hidden=true;$('#referenceList').innerHTML=topics.map(t=>`<a class="reference-item" href="${t.url}" target="_blank" rel="noopener"><div><b>${t.law} — ${t.title}</b><span>Resmî mevzuat sayfası</span></div><span class="reference-arrow">Kaynağa git ↗</span></a>`).join('');}
-  function showHome(){ $('#referenceView').hidden=true;$('#quizView').style.display='none';$('#homeView').style.display='block';$('#bottomNav').hidden=true;$('#referencesBtn').hidden=false; }
+  function showHome(){ $('#referenceView').hidden=true;$('#quizView').style.display='none';$('#homeView').style.display='block';$('#bottomNav').hidden=true;$('#referencesBtn').hidden=false;$('#drawer').classList.remove('show'); }
   function start(){active=questions.filter(q=>q.topic===selected).sort(()=>Math.random()-.5);index=0;answers={};$('#homeView').style.display='none';$('#quizView').style.display='block';$('#bottomNav').hidden=false;$('#quizTopic').textContent=topics.find(t=>t.id===selected).title;renderQuestion();}
   function renderQuestion(){const q=active[index], answered=answers[index];$('#question').textContent=q.q;$('#options').innerHTML=q.o.map((o,i)=>{let state='';if(answered!==undefined){state=i===q.a?'correct':(i===answered?'wrong':'');}const disabled=answered!==undefined?'disabled':'';return `<button class="option ${state}" data-i="${i}" ${disabled}><span class="letter">${letters[i]}</span><span>${esc(o.text)}</span></button>`}).join(''); $$('#options .option').forEach(b=>b.onclick=()=>answer(+b.dataset.i)); const f=$('#feedback');f.className='feedback';f.innerHTML='';if(answered!==undefined)showFeedback(q,answered);$('#count').textContent=`${index+1} / ${active.length}`;$('#progressLabel').textContent=`Soru ${index+1} / ${active.length}`;$('#progressBar').style.width=`${((index+1)/active.length)*100}%`;$('#prevBtn').disabled=index===0;$('#nextBtn').textContent=index===active.length-1?'Başa dön ↻':'Sonraki →';stats();drawerList();}
   function answer(i){answers[index]=i;renderQuestion();}
@@ -1848,7 +1977,7 @@
   function stats(){const v=Object.values(answers);const right=v.filter((a,i)=>a===active[i]?.a).length;$('#rightStat').textContent=right;$('#wrongStat').textContent=v.length-right;}
   function go(n){if(n<0)return;if(n>=active.length){index=0}else index=n;renderQuestion();}
   function drawerList(){if(!active.length)return;$('#drawerList').innerHTML=active.map((q,i)=>{const a=answers[i];return `<button class="qdot ${i===index?'current':''} ${a===q.a?'ok':a!==undefined?'no':''}" data-go="${i}">${i+1}</button>`}).join('');$$('.qdot').forEach(b=>b.onclick=()=>{index=+b.dataset.go;$('#drawer').classList.remove('show');renderQuestion();});}
-  renderTopics();$('#startBtn').onclick=start;$('#referencesBtn').onclick=showReferences;$('#referenceBack').onclick=showHome;$('#prevBtn').onclick=()=>go(index-1);$('#nextBtn').onclick=()=>go(index+1);$('#listBtn').onclick=()=>$('#drawer').classList.add('show');$('#closeDrawer').onclick=()=>$('#drawer').classList.remove('show');$('#drawer').onclick=e=>{if(e.target===$('#drawer'))$('#drawer').classList.remove('show')};$('#backHome').onclick=showHome;document.addEventListener('keydown',e=>{if($('#quizView').style.display==='block'&&e.key==='ArrowLeft')go(index-1);if($('#quizView').style.display==='block'&&e.key==='ArrowRight')go(index+1)});
+  renderTopics();$('#homeSeal').onclick=showHome;$('#referencesBtn').onclick=showReferences;$('#referenceBack').onclick=showHome;$('#prevBtn').onclick=()=>go(index-1);$('#nextBtn').onclick=()=>go(index+1);$('#listBtn').onclick=()=>$('#drawer').classList.add('show');$('#closeDrawer').onclick=()=>$('#drawer').classList.remove('show');$('#drawer').onclick=e=>{if(e.target===$('#drawer'))$('#drawer').classList.remove('show')};$('#backHome').onclick=showHome;document.addEventListener('keydown',e=>{if($('#quizView').style.display==='block'&&e.key==='ArrowLeft')go(index-1);if($('#quizView').style.display==='block'&&e.key==='ArrowRight')go(index+1)});
   </script>
 </body>
 </html>
