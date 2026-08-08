@@ -56,13 +56,26 @@
     .top{margin-bottom:52px}
     .brand{gap:11px}
     .seal{
-      width:38px;height:38px;border-radius:11px;background:var(--ink);font-size:15px;
-      border:0;padding:0;cursor:pointer;
-      box-shadow:inset 0 1px rgba(255,255,255,.16),0 4px 12px rgba(16,24,40,.14);
-      transition:transform 160ms var(--ease-out),box-shadow 160ms ease
+      width:36px;height:36px;border:1px solid rgba(16,24,40,.08);border-radius:50%;padding:0;
+      background:rgba(255,255,255,.62);color:#172033;font-size:14px;font-weight:800;cursor:pointer;
+      -webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%);
+      box-shadow:inset 0 1px rgba(255,255,255,.78),0 2px 8px rgba(16,24,40,.08);
+      transition:transform 160ms var(--ease-out),background 180ms ease,border-color 180ms ease,box-shadow 180ms ease
     }
     .brand h1{font-size:15px;letter-spacing:-.02em}
     .brand p{font-size:12px;color:var(--muted)}
+    .top-actions{display:flex;align-items:center;gap:9px}
+    .theme-toggle{
+      width:56px;height:34px;padding:3px 4px;border:1px solid rgba(16,24,40,.08);border-radius:999px;
+      background:rgba(255,255,255,.54);color:#64748b;cursor:pointer;
+      -webkit-backdrop-filter:blur(18px) saturate(170%);backdrop-filter:blur(18px) saturate(170%);
+      box-shadow:inset 0 1px rgba(255,255,255,.8),0 2px 9px rgba(16,24,40,.08);
+      transition:transform 160ms var(--ease-out),border-color 180ms ease,background 180ms ease,box-shadow 180ms ease;
+    }
+    .theme-toggle__rail{position:relative;display:flex;align-items:center;justify-content:space-between;width:100%;height:100%}
+    .theme-toggle svg{position:relative;z-index:2;width:13px;height:13px;stroke:currentColor;stroke-width:1.8;fill:none;pointer-events:none;transition:color 180ms ease,opacity 180ms ease}
+    .theme-toggle__sun{color:#d28b10}.theme-toggle__moon{color:#77849a;opacity:.72}
+    .theme-toggle__knob{position:absolute;z-index:1;left:0;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.90);box-shadow:0 1px 2px rgba(16,24,40,.12),0 3px 8px rgba(16,24,40,.12);transition:transform 180ms var(--ease-out),background 180ms ease,box-shadow 180ms ease}
     .source-link,.secondary{
       border:1px solid var(--line);background:rgba(255,255,255,.72);color:#344054;
       border-radius:10px;font-size:13px;font-weight:700;box-shadow:0 1px 1px rgba(16,24,40,.02);
@@ -99,7 +112,8 @@
     .topic.selected{border:1px solid var(--blue);background:#f8faff;box-shadow:0 10px 28px rgba(36,87,245,.12)}
     .topic.selected:after{transform:scaleX(1)}
     @media (hover:hover) and (pointer:fine){
-      .seal:hover{transform:translateY(-1px);box-shadow:inset 0 1px rgba(255,255,255,.16),0 7px 16px rgba(16,24,40,.18)}
+      .seal:hover{transform:translateY(-1px);background:rgba(255,255,255,.84);box-shadow:inset 0 1px rgba(255,255,255,.9),0 5px 13px rgba(16,24,40,.12)}
+      .theme-toggle:hover{transform:translateY(-1px);background:rgba(255,255,255,.72);box-shadow:inset 0 1px rgba(255,255,255,.9),0 5px 13px rgba(16,24,40,.10)}
       .topic:hover{transform:translateY(-3px);border-color:#b8c5ef;box-shadow:var(--shadow)}
       .topic:hover:after{transform:scaleX(1)}
       .source-link:hover,.secondary:hover{border-color:#c7d1ea;background:#fff;box-shadow:0 5px 15px rgba(16,24,40,.06)}
@@ -144,15 +158,22 @@
     @media (prefers-reduced-motion:reduce){
       *,*:before,*:after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
     }
-    @media (prefers-reduced-transparency:reduce){.nav-inner{background:var(--navy);backdrop-filter:none}.source-link,.secondary{background:#fff}}
+    @media (prefers-reduced-transparency:reduce){.nav-inner{background:var(--navy);backdrop-filter:none}.source-link,.secondary,.seal,.theme-toggle{background:#fff;backdrop-filter:none}}
+    html[data-theme="dark"]{color-scheme:dark;--ink:#edf2f8;--muted:#9aa8be;--paper:#151d2b;--canvas:#0c111a;--line:#2a354a;--blue:#8da7ff;--navy:#101724;--good:#103827;--good-ink:#8ee9b2;--bad:#431d2a;--bad-ink:#ffb2c0;--shadow:0 1px 2px rgba(0,0,0,.16),0 16px 34px rgba(0,0,0,.28)}
+    html[data-theme="dark"] body:before{background:radial-gradient(circle at 82% -8%,rgba(112,145,255,.16),transparent 30rem),linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:auto,40px 40px,40px 40px}
+    html[data-theme="dark"] .seal{background:rgba(255,255,255,.075);border-color:rgba(255,255,255,.13);color:#f8fbff;box-shadow:inset 0 1px rgba(255,255,255,.12),0 2px 9px rgba(0,0,0,.20)}
+    html[data-theme="dark"] .theme-toggle{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.13);color:#dbe5f5;box-shadow:inset 0 1px rgba(255,255,255,.12),0 2px 10px rgba(0,0,0,.20)}html[data-theme="dark"] .theme-toggle__knob{transform:translateX(22px);background:rgba(255,255,255,.16);box-shadow:inset 0 1px rgba(255,255,255,.16),0 3px 9px rgba(0,0,0,.26)}html[data-theme="dark"] .theme-toggle__sun{color:#8492aa;opacity:.58}html[data-theme="dark"] .theme-toggle__moon{color:#f0f4ff;opacity:1}
+    html[data-theme="dark"] .source-link,html[data-theme="dark"] .secondary{background:rgba(21,29,43,.86);border-color:var(--line);color:#dbe4f3}html[data-theme="dark"] .source-link{color:#dbe4f3}
+    html[data-theme="dark"] .topic,html[data-theme="dark"] .card,html[data-theme="dark"] .reference-item,html[data-theme="dark"] .drawer-panel{background:var(--paper);border-color:var(--line)}html[data-theme="dark"] .topic.selected{background:#18233a;border-color:var(--blue)}html[data-theme="dark"] .meta span,html[data-theme="dark"] .letter{background:#222d40;color:#b5c1d4}html[data-theme="dark"] .option{background:var(--paper);border-color:var(--line);color:var(--ink)}html[data-theme="dark"] .bar{background:#2a354a}html[data-theme="dark"] .feedback blockquote,html[data-theme="dark"] .feedback .citation{color:#c4cede}html[data-theme="dark"] .site-footer{border-color:var(--line)}
+    @media (hover:hover) and (pointer:fine){html[data-theme="dark"] .seal:hover,html[data-theme="dark"] .theme-toggle:hover{background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.20)}html[data-theme="dark"] .topic:hover{background:#19243a;border-color:#536b9e}html[data-theme="dark"] .option:hover:not(:disabled){background:#19243a;border-color:#536b9e}html[data-theme="dark"] .reference-item:hover{border-color:#536b9e}html[data-theme="dark"] .source-link:hover,html[data-theme="dark"] .secondary:hover{background:#1d2737;border-color:#536b9e}}
     @media (max-width:850px){.topic-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{padding:37px 32px;min-height:250px}.top{margin-bottom:32px}}
     @media (max-width:650px){
-      .app{padding:18px 14px 98px}.top{margin-bottom:26px}.brand p{display:none}.source-link{padding:8px 10px}.hero{min-height:235px;padding:30px 23px;border-radius:16px}.hero:before{top:18px;right:18px;font-size:9px}.hero h2{max-width:330px;font-size:31px}.hero p{font-size:14px}.creator{margin-top:26px}.topic-grid{grid-template-columns:1fr;gap:9px;margin-top:10px}.topic{min-height:185px;padding:18px}.meta{right:18px;bottom:15px;left:18px}.quiz-head h2{font-size:27px}.progress{min-width:106px}.card{padding:23px 16px;border-radius:15px}.question{font-size:22px}.option{padding:13px 12px;font-size:14px}.nav-inner{gap:3px;margin:0 9px 9px;padding:6px;border-radius:13px}.nav-inner .secondary{padding:9px 9px}.nav-inner #prevBtn,.nav-inner #listBtn{font-size:0}.nav-inner #prevBtn:after{content:"←";font-size:16px}.nav-inner #listBtn:after{content:"☷";font-size:16px}.nav-inner .primary{padding:9px 11px}.reference h2{font-size:32px}.reference-item{padding:16px}.reference-item b{font-size:15px}}
+      .app{padding:18px 14px 98px}.top{margin-bottom:26px}.brand p{display:none}.top-actions{gap:7px}.theme-toggle{width:52px}.source-link{padding:8px 10px}.hero{min-height:235px;padding:30px 23px;border-radius:16px}.hero:before{top:18px;right:18px;font-size:9px}.hero h2{max-width:330px;font-size:31px}.hero p{font-size:14px}.creator{margin-top:26px}.topic-grid{grid-template-columns:1fr;gap:9px;margin-top:10px}.topic{min-height:185px;padding:18px}.meta{right:18px;bottom:15px;left:18px}.quiz-head h2{font-size:27px}.progress{min-width:106px}.card{padding:23px 16px;border-radius:15px}.question{font-size:22px}.option{padding:13px 12px;font-size:14px}.nav-inner{gap:3px;margin:0 9px 9px;padding:6px;border-radius:13px}.nav-inner .secondary{padding:9px 9px}.nav-inner #prevBtn,.nav-inner #listBtn{font-size:0}.nav-inner #prevBtn:after{content:"←";font-size:16px}.nav-inner #listBtn:after{content:"☷";font-size:16px}.nav-inner .primary{padding:9px 11px}.reference h2{font-size:32px}.reference-item{padding:16px}.reference-item b{font-size:15px}}
   </style>
 </head>
 <body>
   <main class="app">
-    <header class="top"><div class="brand"><button id="homeSeal" class="seal" type="button" aria-label="Ana sayfaya dön">V</button><div><h1>Vergi Akademi</h1><p>Müdür yardımcılığı çalışma alanı</p></div></div><button id="referencesBtn" class="source-link">Kaynakça</button></header>
+    <header class="top"><div class="brand"><button id="homeSeal" class="seal" type="button" aria-label="Ana sayfaya dön">V</button><div><h1>Vergi Akademi</h1><p>Müdür yardımcılığı çalışma alanı</p></div></div><div class="top-actions"><button id="themeToggle" class="theme-toggle" type="button" aria-label="Koyu moda geç" aria-pressed="false"><span class="theme-toggle__rail"><svg class="theme-toggle__sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.5"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="theme-toggle__knob"></span><svg class="theme-toggle__moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.4 14.1A8.5 8.5 0 1 1 9.9 3.6 6.7 6.7 0 0 0 20.4 14.1Z"></path></svg></span></button><button id="referencesBtn" class="source-link">Kaynakça</button></div></header>
     <section id="homeView">
       <div class="hero"><h2>Kaynağa dayalı, odaklı sınav hazırlığı.</h2><p>Soruyu seç, yanıtla ve kanundaki dayanağını anında gör.</p><div class="creator">Created by <a href="https://github.com/MrESKK" target="_blank" rel="noopener"><b>MrESKK</b></a></div></div>
       <div id="topicGrid" class="topic-grid"></div>
@@ -1977,6 +1998,9 @@
   function stats(){const v=Object.values(answers);const right=v.filter((a,i)=>a===active[i]?.a).length;$('#rightStat').textContent=right;$('#wrongStat').textContent=v.length-right;}
   function go(n){if(n<0)return;if(n>=active.length){index=0}else index=n;renderQuestion();}
   function drawerList(){if(!active.length)return;$('#drawerList').innerHTML=active.map((q,i)=>{const a=answers[i];return `<button class="qdot ${i===index?'current':''} ${a===q.a?'ok':a!==undefined?'no':''}" data-go="${i}">${i+1}</button>`}).join('');$$('.qdot').forEach(b=>b.onclick=()=>{index=+b.dataset.go;$('#drawer').classList.remove('show');renderQuestion();});}
+  const themeToggle=$('#themeToggle');
+  function setTheme(theme){const dark=theme==='dark';document.documentElement.dataset.theme=dark?'dark':'light';themeToggle.setAttribute('aria-pressed',String(dark));themeToggle.setAttribute('aria-label',dark?'Açık moda geç':'Koyu moda geç');try{localStorage.setItem('mizan-theme',dark?'dark':'light')}catch(e){}}
+  let savedTheme='light';try{savedTheme=localStorage.getItem('mizan-theme')||'light'}catch(e){}setTheme(savedTheme);themeToggle.onclick=()=>setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark');
   renderTopics();$('#homeSeal').onclick=showHome;$('#referencesBtn').onclick=showReferences;$('#referenceBack').onclick=showHome;$('#prevBtn').onclick=()=>go(index-1);$('#nextBtn').onclick=()=>go(index+1);$('#listBtn').onclick=()=>$('#drawer').classList.add('show');$('#closeDrawer').onclick=()=>$('#drawer').classList.remove('show');$('#drawer').onclick=e=>{if(e.target===$('#drawer'))$('#drawer').classList.remove('show')};$('#backHome').onclick=showHome;document.addEventListener('keydown',e=>{if($('#quizView').style.display==='block'&&e.key==='ArrowLeft')go(index-1);if($('#quizView').style.display==='block'&&e.key==='ArrowRight')go(index+1)});
   </script>
 </body>
